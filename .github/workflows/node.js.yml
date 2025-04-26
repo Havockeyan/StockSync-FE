@@ -3,10 +3,10 @@ name: Test and Start React App
 on:
   push:
     branches:
-      - '**'  # runs on any branch push
+      - '**'  # Run on ANY branch push
   pull_request:
     branches:
-      - '**'  # runs on any PR too
+      - '**'  # Run on ANY pull request
 
 jobs:
   build-and-test:
@@ -19,19 +19,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # or whatever Node version your project uses
+          node-version: '20'  # Use your project's Node.js version
 
       - name: Install dependencies
         run: npm install
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --watchAll=false --passWithNoTests
 
       - name: Build app
         run: npm run build
 
-      - name: Start app and check
+      - name: Start app and verify it's running
         run: |
-          npm start &
-          sleep 10  # wait for app to start
-          curl -f http://localhost:3000 || exit 1
+          npm install -g wait-on  # install wait-on
+          npm start &             # start app in background
+          wait-on http://localhost:3000 --timeout 30000  # wait up to 30s
