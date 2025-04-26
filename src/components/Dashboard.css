@@ -1,0 +1,146 @@
+/* Dashboard Styles */
+.dashboard-content {
+  padding: 20px;
+  width: 100%;
+}
+
+.page-title {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-size: 1.8rem;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.stat-card-inner h3 {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.stat-card-inner i {
+  font-size: 1.5rem;
+  color: #3498db;
+}
+
+.stat-card h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+/* Recent Activity */
+.recent-activity {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.recent-activity h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  transition: background-color 0.2s;
+}
+
+.activity-item:hover {
+  background-color: #f1f3f5;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.activity-icon.received {
+  background-color: #e3f8d7;
+  color: #4caf50;
+}
+
+.activity-icon.shipped {
+  background-color: #d7eaf8;
+  color: #2196f3;
+}
+
+.activity-icon.updated {
+  background-color: #f8e8d7;
+  color: #ff9800;
+}
+
+.activity-icon.alert {
+  background-color: #f8d7d7;
+  color: #f44336;
+}
+
+.activity-details h4 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.activity-details p {
+  margin: 5px 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.activity-details small {
+  color: #95a5a6;
+  font-size: 0.8rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+}

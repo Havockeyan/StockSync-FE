@@ -28,19 +28,15 @@ const Login = () => {
       return;
     }
 
-    // Simulate login API call
-    // In a real application, this would be an API call to your backend
-    setTimeout(() => {
-      // For demo purposes, we're using a simple check
-      // In a real app, this would be handled by your authentication system
-      if (email === 'demo@example.com' && password === 'password') {
-        // Store user info (in a real app, you'd store auth tokens)
-        localStorage.setItem('user', JSON.stringify({ email }));
-        navigate('/dashboard');
-      } else {
-        setError('Invalid credentials. Try demo@example.com / password');
-      }
-    }, 500);
+    // Check for admin credentials
+    if ((email === 'admin' && password === 'admin') || 
+        (email === 'demo@example.com' && password === 'password')) {
+      // Store user info (in a real app, you'd store auth tokens)
+      localStorage.setItem('user', JSON.stringify({ email }));
+      navigate('/dashboard');
+    } else {
+      setError('Invalid credentials. Try admin/admin or demo@example.com/password');
+    }
   };
 
   return (
@@ -49,15 +45,15 @@ const Login = () => {
         <h2 className="form-title">Login to Inventory System</h2>
         
         <div className="form-group">
-          <label htmlFor="email">Email Address</label>
+          <label htmlFor="email">Username or Email</label>
           <input
-            type="email"
+            type="text"
             id="email"
             name="email"
             className="form-control"
             value={email}
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder="Enter your username or email"
             required
           />
         </div>
@@ -76,14 +72,14 @@ const Login = () => {
           />
         </div>
 
-        <button type="submit" className="btn">
+        <button type="submit" className="auth-btn">
           Login
         </button>
 
         {error && <div className="error-message">{error}</div>}
 
         <div className="form-footer">
-          Don't have an account?<Link to="/signup">Sign up</Link>
+          Don't have an account? <Link to="/signup" className="auth-link">Sign up</Link>
         </div>
       </form>
     </div>
