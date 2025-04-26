@@ -1,57 +1,54 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Customers.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import './CustomerForm.css';
 
 const CustomerForm = () => {
   const navigate = useNavigate();
-  
-  const [customer, setCustomer] = useState({
+  const { id } = useParams();
+  const isEditMode = !!id;
+
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    address: '',
-    notes: ''
+    address: ''
   });
-  
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCustomer(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (isEditMode) {
+      // In a real app, this would fetch data from API
+      // For now, we'll use mock data
+      const mockCustomer = {
+        id: '1',
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '555-123-4567',
+        address: '123 Main St, Anytown, USA'
+      };
+      setFormData(mockCustomer);
     }
-  };
+  }, [isEditMode, id]);
 
   const validateForm = () => {
     const newErrors = {};
     
-    if (!customer.name.trim()) {
+    if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
     
-    if (!customer.email.trim()) {
+    if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(customer.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
     
-    if (!customer.phone.trim()) {
+    if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!/^[\d\s()+-]+$/.test(customer.phone)) {
-      newErrors.phone = 'Phone number is invalid';
     }
     
-    if (!customer.address.trim()) {
+    if (!formData.address.trim()) {
       newErrors.address = 'Address is required';
     }
     
@@ -59,135 +56,110 @@ const CustomerForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: null
+      });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
     if (validateForm()) {
-      setIsSubmitting(true);
+      // In a real app, this would send data to an API
+      console.log('Submitting customer data:', formData);
       
-      // Simulate API call with setTimeout
-      setTimeout(() => {
-        console.log('Customer data submitted:', customer);
-        // Reset form status
-        setIsSubmitting(false);
-        
-        // Show success message and redirect
-        alert('Customer added successfully!');
-        navigate('/customers');
-      }, 1000);
+      // Navigate back to customer list
+      navigate('/customers');
     }
   };
 
+  const handleCancel = () => {
+    navigate('/customers');
+  };
+
   return (
-    <div className="form-container">
+    <div className="customer-form-container">
       <div className="form-header">
-        <h2>Add New Customer</h2>
-        <button className="back-button" onClick={() => navigate('/customers')}>
-          <i className="fas fa-arrow-left"></i> Back to Customers
+        <h2>{isEditMode ? 'Edit Customer' : 'Add New Customer'}</h2>
+        <button className="back-btn" onClick={() => navigate('/customers')}>
+          Back to List
         </button>
       </div>
       
       <form onSubmit={handleSubmit} className="customer-form">
         <div className="form-group">
-          <label htmlFor="name">
-            Customer Name <span className="required">*</span>
-          </label>
+          <label htmlFor="name">Customer Name*</label>
           <input
             type="text"
             id="name"
             name="name"
-            value={customer.name}
+            className="form-control"
+            value={formData.name}
             onChange={handleChange}
-            className={errors.name ? 'error' : ''}
             placeholder="Enter customer name"
           />
           {errors.name && <div className="error-message">{errors.name}</div>}
         </div>
         
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="email">
-              Email Address <span className="required">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={customer.email}
-              onChange={handleChange}
-              className={errors.email ? 'error' : ''}
-              placeholder="Enter email address"
-            />
-            {errors.email && <div className="error-message">{errors.email}</div>}
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="phone">
-              Phone Number <span className="required">*</span>
-            </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              value={customer.phone}
-              onChange={handleChange}
-              className={errors.phone ? 'error' : ''}
-              placeholder="Enter phone number"
-            />
-            {errors.phone && <div className="error-message">{errors.phone}</div>}
-          </div>
+        <div className="form-group">
+          <label htmlFor="email">Email Address*</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className="form-control"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter email address"
+          />
+          {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
         
         <div className="form-group">
-          <label htmlFor="address">
-            Address <span className="required">*</span>
-          </label>
+          <label htmlFor="phone">Phone Number*</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            className="form-control"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Enter phone number"
+          />
+          {errors.phone && <div className="error-message">{errors.phone}</div>}
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="address">Address*</label>
           <textarea
             id="address"
             name="address"
-            value={customer.address}
+            className="form-control"
+            value={formData.address}
             onChange={handleChange}
-            className={errors.address ? 'error' : ''}
             placeholder="Enter complete address"
-            rows="3"
-          ></textarea>
+            rows="4"
+          />
           {errors.address && <div className="error-message">{errors.address}</div>}
         </div>
         
-        <div className="form-group">
-          <label htmlFor="notes">Additional Notes</label>
-          <textarea
-            id="notes"
-            name="notes"
-            value={customer.notes}
-            onChange={handleChange}
-            placeholder="Enter any additional information (optional)"
-            rows="3"
-          ></textarea>
-        </div>
-        
-        <div className="form-actions">
-          <button 
-            type="button" 
-            className="cancel-button"
-            onClick={() => navigate('/customers')}
-          >
+        <div className="form-buttons">
+          <button type="button" className="cancel-btn" onClick={handleCancel}>
             Cancel
           </button>
-          <button 
-            type="submit" 
-            className="submit-button"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <i className="fas fa-spinner fa-spin"></i> Saving...
-              </>
-            ) : (
-              <>
-                <i className="fas fa-save"></i> Save Customer
-              </>
-            )}
+          <button type="submit" className="submit-btn">
+            {isEditMode ? 'Update Customer' : 'Save Customer'}
           </button>
         </div>
       </form>

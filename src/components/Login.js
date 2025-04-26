@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import '../App.css';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
+  const [credentials, setCredentials] = useState({
+    username: '',
     password: ''
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const { email, password } = formData;
-
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value
     });
   };
 
@@ -23,16 +23,22 @@ const Login = () => {
     setError('');
 
     // Simple validation
-    if (!email || !password) {
-      setError('Please enter all fields');
+    if (!credentials.username || !credentials.password) {
+      setError('Please enter both username/email and password');
       return;
     }
 
-    // Check for admin credentials
-    if ((email === 'admin' && password === 'admin') || 
-        (email === 'demo@example.com' && password === 'password')) {
-      // Store user info (in a real app, you'd store auth tokens)
-      localStorage.setItem('user', JSON.stringify({ email }));
+    // Check for admin credentials or demo credentials
+    if ((credentials.username === 'admin' && credentials.password === 'admin') ||
+        (credentials.username === 'demo@example.com' && credentials.password === 'password')) {
+      
+      // Store login state in localStorage
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('user', credentials.username);
+      
+      console.log('Login successful');
+      
+      // Navigate to dashboard
       navigate('/dashboard');
     } else {
       setError('Invalid credentials. Try admin/admin or demo@example.com/password');
@@ -41,47 +47,46 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h2 className="form-title">Login to Inventory System</h2>
+      <div className="auth-form">
+        <h2>Inventory Management System</h2>
+        <h3>Login</h3>
         
-        <div className="form-group">
-          <label htmlFor="email">Username or Email</label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            className="form-control"
-            value={email}
-            onChange={handleChange}
-            placeholder="Enter your username or email"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            className="form-control"
-            value={password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-
-        <button type="submit" className="auth-btn">
-          Login
-        </button>
-
         {error && <div className="error-message">{error}</div>}
-
-        <div className="form-footer">
-          Don't have an account? <Link to="/signup" className="auth-link">Sign up</Link>
-        </div>
-      </form>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Username or Email</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter admin or demo@example.com"
+              value={credentials.username}
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password"
+              value={credentials.password}
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
+          
+          <button type="submit" className="auth-btn">Login</button>
+          
+          <div className="form-footer">
+            <p>Don't have an account? <Link to="/signup" className="auth-link">Sign Up</Link></p>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

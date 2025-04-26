@@ -1,5 +1,5 @@
-/* Main container for customer list */
-.customer-list-container {
+/* Main container for vendor list */
+.vendor-list-container {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -23,7 +23,7 @@
   margin: 0;
 }
 
-.add-customer-btn {
+.add-vendor-btn {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -36,11 +36,11 @@
   transition: background-color 0.3s;
 }
 
-.add-customer-btn:hover {
+.add-vendor-btn:hover {
   background-color: #45a049;
 }
 
-.add-customer-btn i {
+.add-vendor-btn i {
   margin-right: 8px;
 }
 
@@ -65,13 +65,13 @@
   color: #888;
 }
 
-/* Customer table */
-.customer-table {
+/* Vendor table */
+.vendor-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.customer-table th {
+.vendor-table th {
   text-align: left;
   padding: 12px 15px;
   background-color: #f8f9fa;
@@ -80,13 +80,13 @@
   border-bottom: 2px solid #dee2e6;
 }
 
-.customer-table td {
+.vendor-table td {
   padding: 12px 15px;
   border-bottom: 1px solid #eee;
   color: #333;
 }
 
-.customer-table tr:hover {
+.vendor-table tr:hover {
   background-color: #f5f5f5;
 }
 
@@ -137,8 +137,8 @@
   font-size: 16px;
 }
 
-/* Customer Form Styles */
-.customer-form-container {
+/* Vendor Form Styles */
+.vendor-form-container {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -183,7 +183,7 @@
   margin-right: 8px;
 }
 
-.customer-form {
+.vendor-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -269,8 +269,8 @@
     gap: 10px;
   }
   
-  .customer-table th:nth-child(3),
-  .customer-table td:nth-child(3) {
+  .vendor-table th:nth-child(3),
+  .vendor-table td:nth-child(3) {
     display: none;
   }
   
