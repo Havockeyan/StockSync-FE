@@ -1,0 +1,37 @@
+name: Test and Start React App
+
+on:
+  push:
+    branches:
+      - '**'  # runs on any branch push
+  pull_request:
+    branches:
+      - '**'  # runs on any PR too
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # or whatever Node version your project uses
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build app
+        run: npm run build
+
+      - name: Start app and check
+        run: |
+          npm start &
+          sleep 10  # wait for app to start
+          curl -f http://localhost:3000 || exit 1
